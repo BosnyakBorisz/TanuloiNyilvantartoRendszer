@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanulói nyilvántartó rendszer</title>
+</head>
+<body>
+    <form id="tanuloMent" onsubmit="tanuloMent(event)">
+        <label>Név</label>
+        <input id="tanuloNev" required autocomplete="off" placeholder="Pl. Kiss Anna">
+        <label>Osztály</label>
+        <input id="tanuloOsztaly" required autocomplete="off" placeholder="Pl. 12.A">
+        <label>Átlag</label>
+        <input id="tanuloAtlag" required autocomplete="off" placeholder="Pl. 4.7">
+        <button type="submit" id="honapokGomb">Mentés</button>
+        <p id="kiiras"></p>     
+    </form>
+    <script src="app2.js"></script>
+</body>
+</html>
