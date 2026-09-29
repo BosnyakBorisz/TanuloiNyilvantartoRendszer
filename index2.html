@@ -4,18 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tanulói nyilvántartó rendszer</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body>
-    <form id="tanuloMent" onsubmit="tanuloMent(event)">
-        <label>Név</label>
-        <input id="tanuloNev" required autocomplete="off" placeholder="Pl. Kiss Anna">
-        <label>Osztály</label>
-        <input id="tanuloOsztaly" required autocomplete="off" placeholder="Pl. 12.A">
-        <label>Átlag</label>
-        <input id="tanuloAtlag" required autocomplete="off" placeholder="Pl. 4.7">
-        <button type="submit" id="honapokGomb">Mentés</button>
-        <p id="kiiras"></p>     
+<body class="">
+    <h1 class="flex items-center justify-center h-30 bg-gray-100 text-2xl">Tanulói nyilvántartó rendszer</h1>
+    <p id="hibaUzenet" class="flex items-center justify-center"></p>
+    <form class="max-w-md mx-auto mb-8" onsubmit="tanuloMent(event)">
+        <div class="relative z-0 w-full mb-5 group">
+            <input id="tanuloNev" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+            <label class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin- peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Név</label>
+        </div>
+        <div class="relative z-0 w-full mb-5 group">
+            <input id="tanuloOsztaly" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+            <label class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin- peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Osztály</label>
+        </div>
+        <div class="relative z-0 w-full mb-5 group">
+            <input id="tanuloAtlag" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+            <label class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin- peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Átlag</label>
+        </div>
+        <button id="mentoGomb" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-sm font-medium leading-5 rounded-lg text-sm px-4 py-2.5 focus:outline-none transition-colors" type="submit">Mentés</button>
     </form>
+
+    <div class="max-w-3xl mx-auto relative overflow-x-auto bg-neutral-100 shadow-sm rounded-lg border border-gray-200">
+        <div class="p-4 flex items-center justify-between space-x-4">
+            <label for="input-group-1" class="sr-only">Keresés</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://w3.org" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg>
+                </div>
+                <input type="text" id="keresoInput" class="block w-full max-w-sm ps-9 pe-3 py-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm placeholder:text-gray-400" placeholder="Search">
+            </div>
+        </div>
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+            <thead class="text-sm text-gray-700 bg-gray-50 border-b border-t border-gray-200">
+                <tr>
+                    <th scope="col" class="px-6 py-3 font-medium">Név</th>
+                    <th scope="col" class="px-6 py-3 font-medium">Osztály</th>
+                    <th scope="col" class="px-6 py-3 font-medium">Átlag</th>
+                    <th scope="col" class="px-6 py-3 font-medium">Törlés</th>
+                    <th scope="col" class="p-4">Módosítás</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+
+    <div id="statisztika">
+        <div class="max-w-3xl mx-auto mt-6 p-6 bg-white shadow-sm rounded-lg border border-gray-200">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b border-gray-100 pb-2">Rendszer Statisztika</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+                <div class="p-3 bg-gray-50 rounded-md">
+                    <span class="font-medium text-gray-700">Tanúlok száma:</span> 
+                    <span class="float-right font-bold text-blue-600" id="tanulokSzama">0 fő</span>
+                </div>
+                <div class="p-3 bg-gray-50 rounded-md">
+                    <span class="font-medium text-gray-700">Osztályátlag:</span> 
+                    <span class="float-right font-bold text-green-600" id="osztalyatlag">0</span>
+                </div>
+                <div class="p-3 bg-gray-50 rounded-md">
+                    <span class="font-medium text-gray-700">Legjobb tanuló:</span> 
+                    <span class="float-right font-bold text-gray-900" id="legjobbTanulok"></span>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+
     <script src="app2.js"></script>
 </body>
 </html>
