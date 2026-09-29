@@ -206,5 +206,15 @@ function statisztika(){
     
     
 }
+function abcSOrrend(){
+    tanulok.sort((a, b) => a.nev.localeCompare(b.nev ,'hu'))
+
+    const abcnevekTomb = tanulok.map(tanulo => tanulo.nev)
+    const abckiir = document.getElementById("abcnevek")
+    abckiir.textContent = abcnevekTomb.join(', ')
+    
+}
+    
+
 
 
