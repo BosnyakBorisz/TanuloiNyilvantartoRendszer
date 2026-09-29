@@ -2,8 +2,11 @@ let tanulok = [
     {nev: "Gipsz Jakab", osztaly: "10.D", atlag: 3.8},
     {nev: "Kiss Anna", osztaly: "12.A", atlag: 4.7},
     {nev: "Horváth Gábor", osztaly: "11.C", atlag: 4.2},
-    {nev: "Kovács Panna", osztaly: "11.D", atlag: 3.5}
-];
+    {nev: "Kovács Panna", osztaly: "11.D", atlag: 3.5},
+    {nev: "Kovács Hanna", osztaly: "11.D", atlag: 3.0},
+    {nev: "Lukács Anna", osztaly: "11.D", atlag: 2.0},
+    {nev: "Stenk Attila", osztaly: "11.D", atlag: 1.5},
+]
 
 const tanuloNev = document.getElementById("tanuloNev")
 const tanuloOsztaly = document.getElementById("tanuloOsztaly")
@@ -14,10 +17,10 @@ const statisztikaDiv = document.getElementById("statisztika")
 const keresoInput = document.getElementById("keresoInput")
 const mentoGomb = document.querySelector("mentoGomb")
 
-let szerkesztesAlattIndex = null;
+let szerkesztesAlattIndex = null
 
 document.addEventListener("DOMContentLoaded", () => {
-    tablaFrissit();
+    tablaFrissit()
     if (keresoInput) {
         keresoInput.addEventListener("input", kereses)
     }
@@ -32,45 +35,44 @@ function tanuloMent(event){
         const atlag = parseFloat(tanuloAtlag.value)
 
         if (!nev || !osztaly) throw new Error("Minden mezőt ki kell tölteni!")
-        if (isNaN(atlag)) throw new Error("Nem számot adtál meg!")
+        if (isNaN(atlag)) throw new Error("Nem számot adtál meg az átlagnál!")
         else if(atlag < 1 || atlag > 5){ throw new Error("1 és 5 közötti számot adj meg!") }
 
         const tanuloAdat = {
             nev: nev,
             osztaly: osztaly,
             atlag: atlag
-        };
+        }
 
         if (szerkesztesAlattIndex !== null) {
             tanulok[szerkesztesAlattIndex] = tanuloAdat
             szerkesztesAlattIndex = null
             if (mentoGomb) mentoGomb.textContent = "Mentés"
         } else {
-            tanulok.push(tanuloAdat);
+            tanulok.push(tanuloAdat)
         }
 
-        tanuloNev.value = "";
+        tanuloNev.value = ""
         tanuloOsztaly.value = ""
         tanuloAtlag.value = ""
         hibaUzenet.innerHTML = ""
         
-        tablaFrissit();
+        tablaFrissit()
     } catch (hiba) {
-        hibaUzenet.innerHTML = `<span class="text-red-600 font-medium py-2">Hiba: ${hiba.message}</span>`;
+        hibaUzenet.innerHTML = `<span class="text-red-600 font-medium py-2">Hiba: ${hiba.message}</span>`
     } 
 }
 
 function tablaFrissit(szurtLista = null){
-    tablazatTesz.innerHTML = "";
-    
-  
-    const listaMegjelenitesre = szurtLista ? szurtLista : tanulok;
+    tablazatTesz.innerHTML = ""
+
+    const listaMegjelenitesre = szurtLista ? szurtLista : tanulok
 
     listaMegjelenitesre.forEach((tanulo) => {
-        const eredetiIndex = tanulok.indexOf(tanulo);
+        const eredetiIndex = tanulok.indexOf(tanulo)
         
-        const sor = document.createElement("tr");
-        sor.className = "bg-white border-b border-gray-200 hover:bg-gray-50";
+        const sor = document.createElement("tr")
+        sor.className = "bg-white border-b border-gray-200 hover:bg-gray-50"
 
         sor.innerHTML = `
             <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">${tanulo.nev}</td>
@@ -82,12 +84,12 @@ function tablaFrissit(szurtLista = null){
             <td class="p-4">
                 <button onclick="tanuloModosit(${eredetiIndex})" class="font-medium text-blue-600 hover:underline cursor-pointer">Módosítás</button>
             </td>
-        `;
+        `
 
-        tablazatTesz.appendChild(sor);
-    });
+        tablazatTesz.appendChild(sor)
+    })
     
-    statisztika();
+    statisztika()
 }
 
 function tanuloModosit(index){
@@ -104,10 +106,10 @@ function tanuloModosit(index){
 }
 
 function tanuloTorol(index) {
-    tanulok.splice(index, 1);
+    tanulok.splice(index, 1)
     
     if (szerkesztesAlattIndex === index) {
-        szerkesztesAlattIndex = null;
+        szerkesztesAlattIndex = null
         if (mentoGomb) mentoGomb.textContent = "Mentés"
         tanuloNev.value = ""
         tanuloOsztaly.value = ""
@@ -127,13 +129,13 @@ function kereses(){
     const szurtTanulok = tanulok.filter(tanulo => 
         tanulo.nev.toLowerCase().includes(keresendo) || 
         tanulo.osztaly.toLowerCase().includes(keresendo)
-    );
+    )
     
-    tablaFrissit(szurtTanulok);
+    tablaFrissit(szurtTanulok)
 }
 
 function statisztika(){
-    if (!statisztikaDiv) return;
+    if (!statisztikaDiv) return
     
     if (tanulok.length === 0) {
         statisztikaDiv.innerHTML = `
@@ -144,26 +146,65 @@ function statisztika(){
         return
     }
 
-    
-    const letszam = tanulok.length
-    const osszAtlag = tanulok.reduce((sum, t) => sum + t.atlag, 0) / letszam
-    
-    let legjobbTanulo = tanulok[0]
-    let leggyengebbTanulo = tanulok[0]
-    
-    tanulok.forEach(t => {
-        if (t.atlag > legjobbTanulo.atlag) legjobbTanulo = t
-        if (t.atlag < leggyengebbTanulo.atlag) leggyengebbTanulo = t
-    });
+    let osszeg = 0;
+    let legjobbTanulo = tanulok[0];
+    let jeles = 0;
+    let jo = 0;
+    let kozepes = 0;
+    let elegseges = 0;
+    let elegtelen = 0;
+
+    for(let tanulo of tanulok){
+        osszeg += tanulo.atlag;
+
+        if(tanulo.atlag > legjobbTanulo.atlag){
+            legjobbTanulo = tanulo;
+        }
+        if(tanulo.atlag >= 4.5){
+            jeles++;
+        }
+        else if(tanulo.atlag >= 3.5){
+            jo++;
+        }
+        else if(tanulo.atlag >= 2.5){
+            kozepes++;
+        }
+        else if(tanulo.atlag >= 2.0){
+            elegseges++;
+        }
+        else{
+            elegtelen++;
+        }
+    }
+
+    const atlag = osszeg / tanulok.length;
 
     const letszamkiir = document.getElementById("tanulokSzama")
-    letszamkiir.textContent = letszam
+    letszamkiir.textContent = tanulok.length
 
     const osztalyAtlag = document.getElementById("osztalyatlag")
-    osztalyAtlag.textContent = osszAtlag
+    osztalyAtlag.textContent = atlag
 
     const legjobb = document.getElementById("legjobbTanulok")
     legjobb.textContent = legjobbTanulo.nev
+
+
+    const jeleskiir = document.getElementById("tanulokJeles")
+    jeleskiir.textContent = jeles
+
+    const jokiir = document.getElementById("tanulokJo")
+    jokiir.textContent = jo
+
+    const kozepeskiir = document.getElementById("tanulokKozepes")
+    kozepeskiir.textContent = kozepes
+    
+    const elegsegeskiir = document.getElementById("tanulokMegfelelt")
+    elegsegeskiir.textContent = elegseges
+
+    const elegtelenkiir = document.getElementById("tanulokElegtelen")
+    elegtelenkiir.textContent = elegtelen
     
     
 }
+
+
