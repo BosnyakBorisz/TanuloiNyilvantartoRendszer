@@ -2,7 +2,10 @@ let tanulok = [
     {nev: "Gipsz Jakab", osztaly: "10.D", atlag: 3.8},
     {nev: "Kiss Anna", osztaly: "12.A", atlag: 4.7},
     {nev: "Horváth Gábor", osztaly: "11.C", atlag: 4.2},
-    {nev: "Kovács Panna", osztaly: "11.D", atlag: 3.5}
+    {nev: "Kovács Panna", osztaly: "11.D", atlag: 3.5},
+    {nev: "Kovács Hanna", osztaly: "11.D", atlag: 3.0},
+    {nev: "Lukács Anna", osztaly: "11.D", atlag: 2.0},
+    {nev: "Stenk Attila", osztaly: "11.D", atlag: 1.5}
 ]
 
 const tanuloNev = document.getElementById("tanuloNev")
@@ -13,7 +16,6 @@ const hibaUzenet = document.getElementById("hibaUzenet")
 const statisztikaDiv = document.getElementById("statisztika")
 const keresoInput = document.getElementById("keresoInput")
 const mentoGomb = document.querySelector("mentoGomb")
-
 let szerkesztesAlattIndex = null
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -143,38 +145,38 @@ function statisztika(){
         return
     }
 
-    let osszeg = 0;
-    let legjobbTanulo = tanulok[0];
-    let jeles = 0;
-    let jo = 0;
-    let kozepes = 0;
-    let elegseges = 0;
-    let elegtelen = 0;
+    let osszeg = 0
+    let legjobbTanulo = tanulok[0]
+    let jeles = 0
+    let jo = 0
+    let kozepes = 0
+    let elegseges = 0
+    let elegtelen = 0
 
     for(let tanulo of tanulok){
-        osszeg += tanulo.atlag;
+        osszeg += tanulo.atlag
 
         if(tanulo.atlag > legjobbTanulo.atlag){
-            legjobbTanulo = tanulo;
+            legjobbTanulo = tanulo
         }
         if(tanulo.atlag >= 4.5){
-            jeles++;
+            jeles++
         }
         else if(tanulo.atlag >= 3.5){
-            jo++;
+            jo++
         }
         else if(tanulo.atlag >= 2.5){
-            kozepes++;
+            kozepes++
         }
         else if(tanulo.atlag >= 2.0){
-            elegseges++;
+            elegseges++
         }
         else{
-            elegtelen++;
+            elegtelen++
         }
     }
 
-    const atlag = osszeg / tanulok.length;
+    const atlag = osszeg / tanulok.length
 
     const letszamkiir = document.getElementById("tanulokSzama")
     letszamkiir.textContent = tanulok.length
@@ -184,4 +186,46 @@ function statisztika(){
 
     const legjobb = document.getElementById("legjobbTanulok")
     legjobb.textContent = legjobbTanulo.nev
+
+    const jeleskiir = document.getElementById("tanulokJeles")
+    jeleskiir.textContent = jeles
+
+    const jokiir = document.getElementById("tanulokJo")
+    jokiir.textContent = jo
+
+    const kozepeskiir = document.getElementById("tanulokKozepes")
+    kozepeskiir.textContent = kozepes
+    
+    const elegsegeskiir = document.getElementById("tanulokMegfelelt")
+    elegsegeskiir.textContent = elegseges
+
+    const elegtelenkiir = document.getElementById("tanulokElegtelen")
+    elegtelenkiir.textContent = elegtelen
+}
+
+function csokkenoSorrend(){
+    let kiiras = document.getElementById("novekvoSorrendKiiras")
+    kiiras.innerHTML = ""
+    let rendezett = tanulok.sort((a, b) => b.atlag - a.atlag)
+    rendezett.forEach(t => {
+        if (t.atlag >= 4.5) {
+            kiiras.innerHTML += `<span style="color: green;">${t.atlag}</span> `
+        }
+        else if (t.atlag <= 1.5) {
+            kiiras.innerHTML += `<span style="color: red;">${t.atlag}</span> `
+        }
+        else {
+            kiiras.innerHTML += `<span>${t.atlag}</span> `
+        }
+    })
+
+}
+
+function abcSOrrend(){
+    tanulok.sort((a, b) => a.nev.localeCompare(b.nev ,'hu'))
+
+    const abcnevekTomb = tanulok.map(tanulo => tanulo.nev)
+    const abckiir = document.getElementById("abcnevek")
+    abckiir.textContent = abcnevekTomb.join(', ')
+    
 }
