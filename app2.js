@@ -214,6 +214,17 @@ function abcSOrrend(){
     abckiir.textContent = abcnevekTomb.join(', ')
     
 }
+function csakKituno(){
+    let kitunok=[];
+    for (let tanulo of tanulok){
+        if(tanulo.atlag >= 4.5){
+            kitunok.push(tanulo.nev)
+        }
+        const kitunokiir = document.getElementById("kitunonevek")
+        kitunokiir.textContent =kitunok.join(', ')
+    }
+
+}
     
 
 
