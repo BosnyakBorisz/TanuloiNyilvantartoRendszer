@@ -53,6 +53,28 @@
         </table>
     </div>
 
+    <div class="max-w-3xl mx-auto mt-6 p-6 bg-white shadow-sm rounded-lg border border-gray-200">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b border-gray-100 pb-2">Rendezés</h2>
+        <button 
+            onclick="csokkenoSorrend()" 
+            id="csokkenoRendezes"
+            class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-sm font-medium leading-5 rounded-lg text-sm px-4 py-2.5 focus:outline-none">
+            Csökkenő
+        </button>
+        <button 
+            onclick="abcSOrrend()" 
+            id="abcSorrend"
+            class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-sm font-medium leading-5 rounded-lg text-sm px-4 py-2.5 focus:outline-none">
+            ABC sorrend
+        </button>
+        <button 
+            onclick="csakKituno()" 
+            id="kitunoTanulok"
+            class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-sm font-medium leading-5 rounded-lg text-sm px-4 py-2.5 focus:outline-none">
+            Kitűnő tanulók megjelenítése
+        </button>
+    </div>
+
     <div id="statisztika">
         <div class="max-w-3xl mx-auto mt-6 p-6 bg-white shadow-sm rounded-lg border border-gray-200">
             <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b border-gray-100 pb-2">Statisztika</h2>
@@ -101,23 +123,8 @@
     </div>
 
     
-    <div class="max-w-3xl mx-auto mt-6 p-6 bg-white shadow-sm rounded-lg border border-gray-200">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b border-gray-100 pb-2">Csökkenő sorrend</h2>
-            <button onclick="csokkenoSorrend()" id="mentoGomb" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-sm font-medium leading-5 rounded-lg text-sm px-4 py-2.5 focus:outline-none transition-colors">Csökkenő</button>
-            <p id="novekvoSorrendKiiras"></p>
-    </div>
+    
 
-    <div class="max-w-3xl mx-auto mt-6 p-6 bg-white shadow-sm rounded-lg border border-gray-200">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b border-gray-100 pb-2">ABC sorrend</h2>
-            <button onclick="abcSOrrend()" id="abcSorrend" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-sm font-medium leading-5 rounded-lg text-sm px-4 py-2.5 focus:outline-none transition-colors" type="button">ABC sorrend</button>
-            <p id="abcnevek"></p>          
-    </div>
-
-    <div class="max-w-3xl mx-auto mt-6 p-6 bg-white shadow-sm rounded-lg border border-gray-200">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b border-gray-100 pb-2">Kitűnő tanulók</h2>
-                    <button onclick="csakKituno()" id="kitunoTanulok" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-sm font-medium leading-5 rounded-lg text-sm px-4 py-2.5 focus:outline-none transition-colors" type="button">Kitűnő tanulók megjelenítése</button>
-            <p id="kitunonevek"></p>            
-    </div>
 
     <script src="app.js"></script>
 </body>

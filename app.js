@@ -33,8 +33,11 @@ function tanuloMent(event){
         const osztaly = tanuloOsztaly.value
         const atlag = parseFloat(tanuloAtlag.value)
 
+        const osztalyRegex = /^(1[0-3]|[1-9])\.[a-zA-Z]$/
+
         if (!nev) throw new Error("A név megadása kötelező!")
         else if (!osztaly) throw new Error("Az osztály megadása kötelező!")
+        else if (!osztalyRegex.test(osztaly)) {throw new Error("Az osztály formátuma hibás!")}
         else if (isNaN(atlag)) throw new Error("Nem számot adtál meg az átlagnál!")
         else if(atlag < 1 || atlag > 5){ throw new Error("Az átlag csak 1 és 5 közötti szám lehet!") }
 
@@ -142,7 +145,6 @@ function statisztika(){
         return
     }
 
-    let osszeg = 0
     let legjobbTanulo = tanulok[0]
     let jeles = 0
     let jo = 0
@@ -151,8 +153,6 @@ function statisztika(){
     let elegtelen = 0
 
     for(let tanulo of tanulok){
-        osszeg += tanulo.atlag
-
         if(tanulo.atlag > legjobbTanulo.atlag){
             legjobbTanulo = tanulo
         }
@@ -174,15 +174,20 @@ function statisztika(){
     }
 
     let osztalyok = {}
+
     for (let t of tanulok) {     // osztályonként csoportosítás
-        if (!osztalyok[t.osztaly]) {
-            osztalyok[t.osztaly] = { osszeg: 0, darab: 0 }
+        const osztalyNev = t.osztaly.toUpperCase()
+        if (!osztalyok[osztalyNev]) {
+            osztalyok[osztalyNev] = {
+                osszeg: 0,
+                darab: 0
+            }
         }
-        osztalyok[t.osztaly].osszeg += t.atlag
-        osztalyok[t.osztaly].darab++
+        osztalyok[osztalyNev].osszeg += t.atlag
+        osztalyok[osztalyNev].darab++
     }
- 
-    let eredmeny = [] //átlagok új tömbbe 
+
+    let eredmeny = [] // átlagok új tömbbe
     for (let osztalyNev in osztalyok) {
         let adat = osztalyok[osztalyNev]
         eredmeny.push({
@@ -190,7 +195,7 @@ function statisztika(){
             atlag: Number((adat.osszeg / adat.darab).toFixed(2))
         })
     }
-
+    
     //statisztika
     const letszamkiir = document.getElementById("tanulokSzama")
     letszamkiir.innerHTML = tanulok.length
@@ -221,10 +226,10 @@ function statisztika(){
     elegtelenkiir.innerHTML = elegtelen
 }
 
-function csokkenoSorrend(){
+/*function csokkenoSorrend(){
     let kiiras = document.getElementById("novekvoSorrendKiiras")
     kiiras.innerHTML = ""
-    let rendezett = tanulok.sort((a, b) => b.atlag - a.atlag)
+    let rendezett = [...tanulok].sort((a, b) => b.atlag - a.atlag)
     rendezett.forEach(t => {
         if (t.atlag >= 4.5) {
             kiiras.innerHTML += `<span style="color: green;">${t.atlag}</span> `
@@ -239,9 +244,11 @@ function csokkenoSorrend(){
 }
 
 function abcSOrrend(){
-    tanulok.sort((a, b) => a.nev.localeCompare(b.nev ,'hu'))
+    let rendezett = [...tanulok].sort((a, b) => 
+        a.nev.localeCompare(b.nev, 'hu')
+    )
 
-    const abcnevekTomb = tanulok.map(tanulo => tanulo.nev)
+    const abcnevekTomb = rendezett.map(tanulo => tanulo.nev)
     const abckiir = document.getElementById("abcnevek")
     abckiir.textContent = abcnevekTomb.join(', ')  
 }
@@ -252,7 +259,26 @@ function csakKituno(){
         if(tanulo.atlag >= 4.5){
             kitunok.push(tanulo.nev)
         }
-        const kitunokiir = document.getElementById("kitunonevek")
-        kitunokiir.textContent =kitunok.join(', ')
     }
+    const kitunokiir = document.getElementById("kitunonevek")
+    kitunokiir.textContent =kitunok.join(', ')
+}*/
+
+function csokkenoSorrend(){
+    let rendezett = [...tanulok].sort((a, b) => b.atlag - a.atlag)
+    tablaFrissit(rendezett)
+}
+
+
+function abcSOrrend(){
+    let rendezett = [...tanulok].sort((a, b) => 
+        a.nev.localeCompare(b.nev, 'hu')
+    )
+    tablaFrissit(rendezett)
+}
+
+function csakKituno(){
+    let kitunok = tanulok.filter(tanulo => tanulo.atlag >= 4.5)
+
+    tablaFrissit(kitunok)
 }
