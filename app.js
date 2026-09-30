@@ -11,11 +11,11 @@ let tanulok = [
 const tanuloNev = document.getElementById("tanuloNev")
 const tanuloOsztaly = document.getElementById("tanuloOsztaly")
 const tanuloAtlag = document.getElementById("tanuloAtlag")
-const tablazatTesz = document.querySelector("table tbody")
+const tablazatMegjelenites = document.getElementById("tablazatMegjelenites")
 const hibaUzenet = document.getElementById("hibaUzenet")
 const statisztikaDiv = document.getElementById("statisztika")
 const keresoInput = document.getElementById("keresoInput")
-const mentoGomb = document.querySelector("mentoGomb")
+const mentoGomb = document.getElementById("mentoGomb")
 let szerkesztesAlattIndex = null
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -29,13 +29,14 @@ function tanuloMent(event){
     if(event) event.preventDefault()
 
     try {
-        const nev = tanuloNev.value.trim()
-        const osztaly = tanuloOsztaly.value.trim()
+        const nev = tanuloNev.value
+        const osztaly = tanuloOsztaly.value
         const atlag = parseFloat(tanuloAtlag.value)
 
-        if (!nev || !osztaly) throw new Error("Minden mezőt ki kell tölteni!")
-        if (isNaN(atlag)) throw new Error("Nem számot adtál meg az átlagnál!")
-        else if(atlag < 1 || atlag > 5){ throw new Error("1 és 5 közötti számot adj meg!") }
+        if (!nev) throw new Error("A név megadása kötelező!")
+        else if (!osztaly) throw new Error("Az osztály megadása kötelező!")
+        else if (isNaN(atlag)) throw new Error("Nem számot adtál meg az átlagnál!")
+        else if(atlag < 1 || atlag > 5){ throw new Error("Az átlag csak 1 és 5 közötti szám lehet!") }
 
         const tanuloAdat = {
             nev: nev,
@@ -63,7 +64,7 @@ function tanuloMent(event){
 }
 
 function tablaFrissit(szurtLista = null){
-    tablazatTesz.innerHTML = ""
+    tablazatMegjelenites.innerHTML = ""
 
     const listaMegjelenitesre = szurtLista ? szurtLista : tanulok
 
@@ -84,8 +85,7 @@ function tablaFrissit(szurtLista = null){
                 <button onclick="tanuloModosit(${eredetiIndex})" class="font-medium text-blue-600 hover:underline cursor-pointer">Módosítás</button>
             </td>
         `
-
-        tablazatTesz.appendChild(sor)
+        tablazatMegjelenites.appendChild(sor)
     })
     
     statisztika()
@@ -126,10 +126,7 @@ function kereses(){
     const keresendo = keresoInput.value.toLowerCase().trim()
     
     const szurtTanulok = tanulok.filter(tanulo => 
-        tanulo.nev.toLowerCase().includes(keresendo) || 
-        tanulo.osztaly.toLowerCase().includes(keresendo)
-    )
-    
+        tanulo.nev.toLowerCase().includes(keresendo))    
     tablaFrissit(szurtTanulok)
 }
 
@@ -176,31 +173,52 @@ function statisztika(){
         }
     }
 
-    const atlag = osszeg / tanulok.length
+    let osztalyok = {}
+    for (let t of tanulok) {     // osztályonként csoportosítás
+        if (!osztalyok[t.osztaly]) {
+            osztalyok[t.osztaly] = { osszeg: 0, darab: 0 }
+        }
+        osztalyok[t.osztaly].osszeg += t.atlag
+        osztalyok[t.osztaly].darab++
+    }
+ 
+    let eredmeny = [] //átlagok új tömbbe 
+    for (let osztalyNev in osztalyok) {
+        let adat = osztalyok[osztalyNev]
+        eredmeny.push({
+            osztaly: osztalyNev,
+            atlag: Number((adat.osszeg / adat.darab).toFixed(2))
+        })
+    }
 
+    //statisztika
     const letszamkiir = document.getElementById("tanulokSzama")
-    letszamkiir.textContent = tanulok.length
+    letszamkiir.innerHTML = tanulok.length
 
     const osztalyAtlag = document.getElementById("osztalyatlag")
-    osztalyAtlag.textContent = atlag
+    osztalyAtlag.innerHTML = ""
+    for(let e of eredmeny){
+        osztalyAtlag.innerHTML += `${e.osztaly}: ${e.atlag}<br>`
+    }
 
     const legjobb = document.getElementById("legjobbTanulok")
-    legjobb.textContent = legjobbTanulo.nev
+    legjobb.innerHTML = legjobbTanulo.nev
 
+    //jegystatisztika
     const jeleskiir = document.getElementById("tanulokJeles")
-    jeleskiir.textContent = jeles
+    jeleskiir.innerHTML = jeles
 
     const jokiir = document.getElementById("tanulokJo")
-    jokiir.textContent = jo
+    jokiir.innerHTML = jo
 
     const kozepeskiir = document.getElementById("tanulokKozepes")
-    kozepeskiir.textContent = kozepes
+    kozepeskiir.innerHTML = kozepes
     
     const elegsegeskiir = document.getElementById("tanulokMegfelelt")
-    elegsegeskiir.textContent = elegseges
+    elegsegeskiir.innerHTML = elegseges
 
     const elegtelenkiir = document.getElementById("tanulokElegtelen")
-    elegtelenkiir.textContent = elegtelen
+    elegtelenkiir.innerHTML = elegtelen
 }
 
 function csokkenoSorrend(){
@@ -218,7 +236,6 @@ function csokkenoSorrend(){
             kiiras.innerHTML += `<span>${t.atlag}</span> `
         }
     })
-
 }
 
 function abcSOrrend(){
@@ -226,6 +243,16 @@ function abcSOrrend(){
 
     const abcnevekTomb = tanulok.map(tanulo => tanulo.nev)
     const abckiir = document.getElementById("abcnevek")
-    abckiir.textContent = abcnevekTomb.join(', ')
-    
+    abckiir.textContent = abcnevekTomb.join(', ')  
+}
+
+function csakKituno(){
+    let kitunok=[];
+    for (let tanulo of tanulok){
+        if(tanulo.atlag >= 4.5){
+            kitunok.push(tanulo.nev)
+        }
+        const kitunokiir = document.getElementById("kitunonevek")
+        kitunokiir.textContent =kitunok.join(', ')
+    }
 }

@@ -13,15 +13,15 @@
     <p id="hibaUzenet" class="flex items-center justify-center"></p>
     <form class="max-w-md mx-auto mb-8" onsubmit="tanuloMent(event)">
         <div class="relative z-0 w-full mb-5 group">
-            <input id="tanuloNev" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+            <input id="tanuloNev" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
             <label class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin- peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Név</label>
         </div>
         <div class="relative z-0 w-full mb-5 group">
-            <input id="tanuloOsztaly" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+            <input id="tanuloOsztaly" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
             <label class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin- peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Osztály</label>
         </div>
         <div class="relative z-0 w-full mb-5 group">
-            <input id="tanuloAtlag" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+            <input id="tanuloAtlag" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "  />
             <label class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin- peer-focus:start-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Átlag</label>
         </div>
         <button id="mentoGomb" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-sm font-medium leading-5 rounded-lg text-sm px-4 py-2.5 focus:outline-none transition-colors" type="submit">Mentés</button>
@@ -47,7 +47,7 @@
                     <th scope="col" class="p-4">Módosítás</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="tablazatMegjelenites">
                 
             </tbody>
         </table>
@@ -56,14 +56,14 @@
     <div id="statisztika">
         <div class="max-w-3xl mx-auto mt-6 p-6 bg-white shadow-sm rounded-lg border border-gray-200">
             <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b border-gray-100 pb-2">Statisztika</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+            <div class="grid grid-cols-1 md:grid-cols-1 gap-4 text-sm text-gray-600">
                 <div class="p-3 bg-gray-50 rounded-md">
                     <span class="font-medium text-gray-700">Tanúlok száma:</span> 
-                    <span class="float-right font-bold text-blue-600" id="tanulokSzama">0 fő</span>
+                    <span class="float-right font-bold text-blue-600" id="tanulokSzama"></span>
                 </div>
                 <div class="p-3 bg-gray-50 rounded-md">
-                    <span class="font-medium text-gray-700">Osztályátlag:</span> 
-                    <span class="float-right font-bold text-green-600" id="osztalyatlag">0</span>
+                    <span class="font-medium text-gray-700">Osztályátlagok:</span> 
+                    <span class="float-right font-bold text-green-600" id="osztalyatlag"></span>
                 </div>
                 <div class="p-3 bg-gray-50 rounded-md">
                     <span class="font-medium text-gray-700">Legjobb tanuló:</span> 
@@ -105,12 +105,18 @@
             <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b border-gray-100 pb-2">Csökkenő sorrend</h2>
             <button onclick="csokkenoSorrend()" id="mentoGomb" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-sm font-medium leading-5 rounded-lg text-sm px-4 py-2.5 focus:outline-none transition-colors">Csökkenő</button>
             <p id="novekvoSorrendKiiras"></p>
-    <div>
+    </div>
 
     <div class="max-w-3xl mx-auto mt-6 p-6 bg-white shadow-sm rounded-lg border border-gray-200">
             <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b border-gray-100 pb-2">ABC sorrend</h2>
             <button onclick="abcSOrrend()" id="abcSorrend" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-sm font-medium leading-5 rounded-lg text-sm px-4 py-2.5 focus:outline-none transition-colors" type="button">ABC sorrend</button>
             <p id="abcnevek"></p>          
+    </div>
+
+    <div class="max-w-3xl mx-auto mt-6 p-6 bg-white shadow-sm rounded-lg border border-gray-200">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b border-gray-100 pb-2">Kitűnő tanulók</h2>
+                    <button onclick="csakKituno()" id="kitunoTanulok" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-sm font-medium leading-5 rounded-lg text-sm px-4 py-2.5 focus:outline-none transition-colors" type="button">Kitűnő tanulók megjelenítése</button>
+            <p id="kitunonevek"></p>            
     </div>
 
     <script src="app.js"></script>
