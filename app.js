@@ -25,21 +25,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 })
 
-function tanuloMent(event){
-    if(event) event.preventDefault()
+function tanuloMent(event) {
+    if (event) event.preventDefault()
 
     try {
-        const nev = tanuloNev.value
-        const osztaly = tanuloOsztaly.value
-        const atlag = parseFloat(tanuloAtlag.value)
+        const nev = tanuloNev.value.trim()
+        const osztaly = tanuloOsztaly.value.trim()
+        const atlagInput = tanuloAtlag.value.trim()
 
+        const atlag = parseFloat(atlagInput.replace(",", "."))
+
+        const nevRegex = /^[A-Za-zÁÉÍÓÖŐÚÜŰáéíóöőúüű]+(?: [A-Za-zÁÉÍÓÖŐÚÜŰáéíóöőúüű]+)*$/
         const osztalyRegex = /^(1[0-3]|[1-9])\.[a-zA-Z]$/
+        const atlagRegex = /^\d+(?:[,.]\d+)?$/
 
-        if (!nev) throw new Error("A név megadása kötelező!")
-        else if (!osztaly) throw new Error("Az osztály megadása kötelező!")
-        else if (!osztalyRegex.test(osztaly)) {throw new Error("Az osztály formátuma hibás!")}
-        else if (isNaN(atlag)) throw new Error("Nem számot adtál meg az átlagnál!")
-        else if(atlag < 1 || atlag > 5){ throw new Error("Az átlag csak 1 és 5 közötti szám lehet!") }
+
+        if (!nev) {throw new Error("A név megadása kötelező!")}
+        else if (nev.length < 3) {throw new Error("A névnek legalább 3 karakter hosszúnak kell lennie!")}
+        else if (!nevRegex.test(nev)) {throw new Error("A név csak betűket és szóközt tartalmazhat!")}
+        else if (!osztaly) {throw new Error("Az osztály megadása kötelező!")}
+        else if (!osztalyRegex.test(osztaly)) {throw new Error("Az osztály formátuma hibás! Például: 9.a vagy 12.b")}
+        else if (!atlagInput) {throw new Error("Az átlag megadása kötelező!")}
+        else if (!atlagRegex.test(atlagInput)) {throw new Error("Az átlag csak szám lehet! Például: 4,99 vagy 4.99")}
+        else if (isNaN(atlag)) {throw new Error("Az átlag nem érvényes szám!")}
+        else if (atlag < 1 || atlag > 5) {throw new Error("Az átlag csak 1 és 5 közötti szám lehet!")}
 
         const tanuloAdat = {
             nev: nev,
@@ -50,8 +59,12 @@ function tanuloMent(event){
         if (szerkesztesAlattIndex !== null) {
             tanulok[szerkesztesAlattIndex] = tanuloAdat
             szerkesztesAlattIndex = null
-            if (mentoGomb) mentoGomb.textContent = "Mentés"
-        } else {
+
+            if (mentoGomb) {
+                mentoGomb.textContent = "Mentés"
+            }
+        } 
+        else {
             tanulok.push(tanuloAdat)
         }
 
@@ -59,12 +72,17 @@ function tanuloMent(event){
         tanuloOsztaly.value = ""
         tanuloAtlag.value = ""
         hibaUzenet.innerHTML = ""
-        
+
         tablaFrissit()
+
     } catch (hiba) {
-        hibaUzenet.innerHTML = `<span class="text-red-600 font-medium py-2">Hiba: ${hiba.message}</span>`
-    } 
+        hibaUzenet.innerHTML =
+            `<span class="text-red-600 font-medium py-2">
+                Hiba: ${hiba.message}
+            </span>`
+    }
 }
+
 
 function tablaFrissit(szurtLista = null){
     tablazatMegjelenites.innerHTML = ""
